@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Room } from '../types/room';
-
+import initialRooms from '../defaultRooms.json';
 interface RoomsState {
     rooms: Room[];
 }
 
 const initialState: RoomsState = {
-    rooms: [],
+    rooms: initialRooms,
 };
 
 const roomsSlice = createSlice({

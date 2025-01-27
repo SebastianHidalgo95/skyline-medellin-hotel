@@ -30,6 +30,7 @@ const Hotels = () => {
             status: hotel?.status,
         };
     }
+    console.log(hotels)
     const headers = [
         { key: 'name', title: 'Name' },
         { key: 'country', title: 'Country' },

@@ -1,0 +1,113 @@
+[
+    {
+      "id": "1737994414158",
+      "name": "Backpackers",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "backpackers@gmail.com",
+      "phone": "3225874681",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994447951",
+      "name": "Elcielo Hotel",
+      "address": "",
+      "city": { "name": "Bogotá D.C.", "id": 149237 },
+      "state": { "name": "Bogotá D.C.", "id": 4921 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "elcielohotel@gmail.com",
+      "phone": "3225848412",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994414159",
+      "name": "Hotel Dann Carlton Medellín",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "danncarltonmed@gmail.com",
+      "phone": "3205841123",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994414160",
+      "name": "InterContinental Medellín",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "intercontimedellin@gmail.com",
+      "phone": "3216879401",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994414161",
+      "name": "Hotel Marquee Medellín",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "marqueemedellin@gmail.com",
+      "phone": "3145879461",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994414162",
+      "name": "The Click Clack Hotel Medellín",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "clickclackmedellin@gmail.com",
+      "phone": "3006879415",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994414163",
+      "name": "Hotel San Fernando Plaza",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "sanfernandoplaza@gmail.com",
+      "phone": "3215849681",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994414164",
+      "name": "NH Collection Medellín Royal",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "nhroyalmedellin@gmail.com",
+      "phone": "3006847123",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994414165",
+      "name": "Hotel Dann Carlton Belfort Medellín",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "dannbelfortmedellin@gmail.com",
+      "phone": "3106847123",
+      "status": "enabled"
+    },
+    {
+      "id": "1737994414166",
+      "name": "Hotel York Luxury Suites Medellín",
+      "address": "",
+      "city": { "name": "Medellín", "id": 21074 },
+      "state": { "name": "Antioquia", "id": 2890 },
+      "country": { "name": "Colombia", "id": 48 },
+      "email": "yorkluxurysuites@gmail.com",
+      "phone": "3226879401",
+      "status": "enabled"
+    }
+  ]
+  
