@@ -43,11 +43,11 @@ const Hotels = () => {
         {
             label: hotel.status === 'enabled' ? 'Disable' : 'Enable',
             onClick: (hotel: Hotel) => {
-                const newStatus = hotel.status === 'enabled' ? 'disable' : 'enable';
+                const newStatus = hotel.status === 'enabled' ? 'disabled' : 'enabled';
                 // This toas is used for confirm and trigger a process on each decition
                 const confirmToastId = toast(
                     <ConfirmToast
-                        message={`Are you sure you want to ${hotel.status === 'enable' ? 'disable' : 'enable'} this hotel?`}
+                        message={`Are you sure you want to ${hotel.status === 'enabled' ? 'disable' : 'enable'} this hotel?`}
                         onConfirm={() => {
                             // Update the current hotel status
                             dispatch(updateHotelStatus({ id: hotel.id, status: newStatus }));
@@ -68,7 +68,7 @@ const Hotels = () => {
                     }
                 );
             },
-            icon: <FontAwesomeIcon icon={hotel.status === 'enable' ? faCircleXmark : faCircleCheck} />,
+            icon: <FontAwesomeIcon icon={hotel.status === 'enabled' ? faCircleXmark : faCircleCheck} />,
         },
         {
             label: 'Details',
