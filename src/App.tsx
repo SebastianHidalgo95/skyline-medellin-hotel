@@ -16,6 +16,7 @@ import RoomsResults from './pages/Ecommerce/RoomsResults';
 import BookingForm from './pages/Ecommerce/BookRoom';
 import ReservationSuccess from './pages/Ecommerce/SuccessReservation';
 import Welcome from './pages/Welcome';
+import Reservations from './pages/Reservations/Reservations';
 
 const App = () => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -117,6 +118,15 @@ const App = () => {
                         <>
                             <PageTitle title="Skyline | Edit Hotel" />
                             <CreateHotel />
+                        </>
+                    }
+                />
+                <Route
+                    path="/reservations"
+                    element={
+                        <>
+                            <PageTitle title="Skyline | Hotels" />
+                            <Reservations />
                         </>
                     }
                 />

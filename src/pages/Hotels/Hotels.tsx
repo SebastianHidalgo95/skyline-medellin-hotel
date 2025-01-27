@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faCircleXmark, faInfoCircle, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import ConfirmToast from '../../components/ConfirmToast';
-// import ConfirmToast from '../components/ConfirmToast';
 
 const Hotels = () => {
     const navigate = useNavigate();
@@ -26,14 +25,13 @@ const Hotels = () => {
             address: hotel.address,
             country: hotel?.country?.name,
             state: hotel?.state?.name,
-            city: hotel?.city.name,
+            city: hotel?.city?.name,
             email: hotel?.email,
             status: hotel?.status,
         };
     }
     const headers = [
         { key: 'name', title: 'Name' },
-        { key: 'address', title: 'Address' },
         { key: 'country', title: 'Country' },
         { key: 'state', title: 'State' },
         { key: 'city', title: 'City' },
@@ -45,30 +43,25 @@ const Hotels = () => {
             label: hotel.status === 'enable' ? 'Disable' : 'Enable',
             onClick: (hotel: Hotel) => {
                 const newStatus = hotel.status === 'enable' ? 'disable' : 'enable';
-                // Crear un ID único para el toast de confirmación
+                // This toas is used for confirm and trigger a process on each decition
                 const confirmToastId = toast(
                     <ConfirmToast
                         message={`Are you sure you want to ${hotel.status === 'enable' ? 'disable' : 'enable'} this hotel?`}
                         onConfirm={() => {
-                            // Actualizar el estado del hotel
+                            // Update the current hotel status
                             dispatch(updateHotelStatus({ id: hotel.id, status: newStatus }));
-
-                            // Mostrar el toast de éxito
                             toast.success(`Hotel ${hotel.name} is now ${newStatus}`, {
-                                autoClose: 2000, // Duración de 5 segundos
+                                autoClose: 2000, 
                             });
-
-                            // Cerrar específicamente el toast de confirmación
                             toast.dismiss(confirmToastId);
                         }}
                         onCancel={() => {
-                            // Cerrar únicamente el toast de confirmación
                             toast.dismiss(confirmToastId);
                         }}
                     />,
                     {
                         position: "top-center",
-                        autoClose: false, // Mantener el toast hasta que se confirme o cancele
+                        autoClose: false, 
                         closeOnClick: false,
                         draggable: false,
                     }
@@ -89,7 +82,7 @@ const Hotels = () => {
             <Breadcrumb pageName="Hotels" />
             <div className="flex justify-end mb-4">
                 <SimpleButton onClick={handleCreateHotel}>
-                    <FontAwesomeIcon icon={faPlus} />
+                    <FontAwesomeIcon icon={faPlus} className='mr-2'/>
                     Create Hotel
                 </SimpleButton>
             </div>

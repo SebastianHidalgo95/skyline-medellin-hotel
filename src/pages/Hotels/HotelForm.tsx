@@ -1,35 +1,47 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { CitySelect, CountrySelect, StateSelect } from "react-country-state-city";
+import { GetCity, GetCountries, GetState } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
-import {  City, Country, State } from 'react-country-state-city/dist/esm/types';
+import { City, Country, State } from 'react-country-state-city/dist/esm/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { addHotel, updateHotel } from '../../redux/hotelsSlice';
 import useForm from '../../hooks/useForm';
 import { Hotel } from '../../types/hotel';
 import { RootState } from '../../redux/store';
-
+import { useEffect, useState } from 'react';
+import Select from 'react-select';
+import SimpleButton from '../../components/Buttons/SimpleButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const CreateHotel = () => {
+    // Hooks
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     // get the id from the url
     const { hotelId } = useParams<{ hotelId: string }>();
-    const hotelUpdate = useSelector((state: RootState) => state.hotels.hotels.find((hotel: Hotel )=> hotel.id === hotelId));
+    const hotelUpdate = useSelector((state: RootState) => state.hotels.hotels.find((hotel: Hotel) => hotel.id === hotelId));
+
+    // states
+    const [countriesList, setCountriesList] = useState<Country[]>([]);
+    const [stateList, setStateList] = useState<State[]>([]);
+    const [cityList, setCityList] = useState<City[]>([]);
+    // form values
     const initialValues: Hotel = hotelUpdate ? hotelUpdate : {
         id: '',
         name: '',
         email: '',
-        country: {} as Country,
+        country: {} as { name: string, id: number },
         state: {} as State,
         city: {} as City,
         address: '',
-        status: '',
+        status: 'enabled',
     };
     const { form: hotelForm, setForm } = useForm<Hotel>({ initialValues });
+    /* Functions */
     const handleSubmitHotel = () => {
-        
         const id = hotelId ?? Date.now().toString();
-        hotelId 
+        hotelId
             ? dispatch(updateHotel(hotelForm))
             : dispatch(addHotel({
                 ...hotelForm,
@@ -37,15 +49,40 @@ const CreateHotel = () => {
             }));
         navigate(`/hotels/details/${id}`);
     };
+
+    useEffect(() => {
+        GetCountries().then((result) => {
+            setCountriesList(result as Country[]);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (hotelForm?.country?.id)
+            GetState(hotelForm?.country?.id).then((result) => {
+                setStateList(result as State[]);
+            });
+    }, [hotelForm?.country]);
+    useEffect(() => {
+        if (hotelForm?.country?.id && hotelForm?.state?.id)
+            GetCity(hotelForm?.country?.id, hotelForm?.state?.id).then((result) => {
+                setCityList(result as City[]);
+            });
+    }, [hotelForm?.state]);
     return (
         <div>
             <div className="flex flex-col gap-9">
                 {/* <!-- Contact Form --> */}
-                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-                        <h3 className="font-medium text-black dark:text-white">
+                <div className="rounded-sm border border-stroke bg-white shadow-default">
+                    <div className="border-b border-stroke py-4 px-6.5 ">
+                        <h3 className="font-medium text-black text-center">
                             {hotelId ? 'Hotel Edition' : 'Hotel Creation'}
                         </h3>
+                        <div className="flex">
+                            <SimpleButton onClick={() => navigate(-1)}>
+                                <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
+                                Back
+                            </SimpleButton>
+                        </div>
                     </div>
                     <div >
                         <div className="p-6.5">
@@ -58,14 +95,11 @@ const CreateHotel = () => {
                                         type="text"
                                         placeholder="Enter your first name"
                                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        onChange={(e) => setForm({name:e.target.value})}
+                                        onChange={(e) => setForm({ name: e.target.value })}
                                         value={hotelForm?.name}
                                     />
                                 </div>
-
-                                
                             </div>
-
                             <div className="mb-4.5">
                                 <label className="mb-2.5 block text-black dark:text-white">
                                     Email <span className="text-meta-1">*</span>
@@ -74,84 +108,85 @@ const CreateHotel = () => {
                                     type="email"
                                     placeholder="Enter your email address"
                                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                    onChange={(e) => setForm({email :e.target.value})}
+                                    onChange={(e) => setForm({ email: e.target.value })}
                                     value={hotelForm?.email}
                                 />
                             </div>
                             <div className="mb-4.5">
                                 <label className="mb-2.5 block text-black dark:text-white">
-                                    Contact 
+                                    Contact
                                 </label>
                                 <input
                                     type="number"
                                     placeholder="Enter hotel contact number"
                                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                    onChange={(e) => setForm({phone :e.target.value})}
+                                    onChange={(e) => setForm({ phone: e.target.value })}
                                 />
                             </div>
-                            <div className="mb-4.5">
-                                <label className="mb-2.5 block text-black dark:text-white">
-                                    Country
-                                </label>
-                                <CountrySelect
-                                    containerClassName="form-group"
-                                    inputClassName=""
-                                    onChange={(country) => {
-                                        const selectcountry = country as Country;
-                                        setForm((prev) => ({
-                                            ...prev, 
-                                            country: selectcountry,
-                                            state: {} as State,
-                                            city: {} as City,
-                                        }));
-                                    }}
-                                    defaultValue={hotelForm?.country as any}
-                                    placeHolder="Select Country"
-                                />
-                            </div>
-                            { hotelForm?.country?.id &&
+                            {countriesList.length > 0 &&
+                                <div className="mb-4.5">
+                                    <label className="mb-2.5 block text-black dark:text-white">
+                                        Country
+                                    </label>
+                                    <Select
+                                        options={countriesList.map((country) => ({ value: country.id, label: country.name }))}
+                                        onChange={(country) => {
+                                            if (country) {
+                                                setForm(
+                                                    (prev) => ({
+                                                        ...prev,
+                                                        country: { name: country.label, id: country.value },
+                                                        state: undefined,
+                                                        city: undefined,
+                                                    })
+                                                );
+                                            }
+
+                                        }}
+                                    />
+                                </div>}
+                            {hotelForm?.country?.id && stateList.length > 0 &&
                                 <div className="mb-4.5">
                                     <label className="mb-2.5 block text-black dark:text-white">
                                         State
                                     </label>
-                                    <StateSelect
-                                        countryid={hotelForm?.country?.id ?? 0}
-                                        containerClassName="form-group"
-                                        inputClassName=""
-                                        onChange={(_state) => 
-                                            setForm((prev) => ({
-                                                ...prev, 
-                                                state: _state as State,
-                                                city: {} as City,
-                                            }))
-                                        }
-                                        defaultValue={hotelForm?.state as any}
-                                        placeHolder="Select State"
+                                    <Select
+                                        options={stateList.map((state) => ({ value: state.id, label: state.name }))}
+                                        onChange={(state) => {
+                                            if (state) {
+                                                setForm(
+                                                    (prev) => ({
+                                                        ...prev,
+                                                        state: { name: state.label, id: state.value },
+                                                        city: undefined,
+                                                    })
+                                                );
+                                            }
+                                        }}
                                     />
                                 </div>
                             }
                             {
-                                // show city select only if state is selected
-                                hotelForm?.state?.id &&
-                                <div className="mb-4.5 
-                                transition-discrete duration-300 ease-in-out"
-                                >
-                                <label className="mb-2.5 block text-black dark:text-white">
-                                    City
-                                </label>
-                                <CitySelect
-                                    countryid={hotelForm?.country?.id ?? -1}
-                                    stateid={hotelForm?.state?.id ?? -1}
-                                    containerClassName="form-group"
-                                    inputClassName=""
-                                    onChange={(_city) => setForm({city: _city as City})}
-                                    defaultValue={hotelForm?.city as any}
-                                    placeHolder="Select City"
-
-                                />
-                            </div>
+                                hotelForm?.state?.id && cityList.length > 0 &&
+                                <div className="mb-4.5">
+                                    <label className="mb-2.5 block text-black dark:text-white">
+                                        City
+                                    </label>
+                                    <Select
+                                        options={cityList.map((city) => ({ value: city.id, label: city.name }))}
+                                        onChange={(city) => {
+                                            if (city) {
+                                                setForm(
+                                                    (prev) => ({
+                                                        ...prev,
+                                                        city: { name: city.label, id: city.value },
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </div>
                             }
-
                             <div className="mb-6">
                                 <label className="mb-2.5 block text-black dark:text-white">
                                     Description
@@ -161,10 +196,11 @@ const CreateHotel = () => {
                                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                                 ></textarea>
                             </div>
-
-                            <button onClick={handleSubmitHotel} className="flex w-1/3 mx-auto justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                                {hotelId ? 'Update': 'Create'}
-                            </button>
+                            <div className='flex justify-center'>
+                                <SimpleButton onClick={handleSubmitHotel}> 
+                                    {hotelId ? 'Update' : 'Create'}
+                                </SimpleButton>
+                            </div>
                         </div>
                     </div>
                 </div>

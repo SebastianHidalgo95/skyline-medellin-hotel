@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useMemo, useState } from 'react';
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 import { City, Country, State } from 'react-country-state-city/dist/esm/types';
@@ -9,23 +8,28 @@ import { SearchParams } from '../../types/searchParams';
 import { useDispatch } from 'react-redux';
 import { updateSearchParams } from '../../redux/reservationSlice';
 import { useNavigate } from 'react-router-dom';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, subDays } from 'date-fns';
 
 const HotelSearch = () => {
+    // Hooks
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    
+    // use states
+    const [countriesList, setCountriesList] = useState<Country[]>([]);
     const [stateList, setStateList] = useState<State[]>([]);
     const [cityList, setCityList] = useState<City[]>([]);
 
+    // Constants
     const { form: searchForm, setForm: setSearchForm } = useForm<SearchParams>({} as any);
+
+    /* Functions */
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(searchForm)
         dispatch(updateSearchParams(searchForm))
         navigate('/rooms/results')
     };
-    const [countriesList, setCountriesList] = useState<Country[]>([]);
+    
     useEffect(() => {
         GetCountries().then((result) => {
             setCountriesList(result as Country[]);
@@ -43,6 +47,14 @@ const HotelSearch = () => {
                 setCityList(result as City[]);
             });
     }, [searchForm?.state]);
+    const excludeDates = useMemo(() => {
+        if (!searchForm?.checkInDate) return [];
+    
+        const checkInDate = parseISO(searchForm.checkInDate);
+        const pastDates = Array.from({ length: 365 }, (_, i) => subDays(checkInDate, i + 1));
+    
+        return [checkInDate, ...pastDates];
+    }, [searchForm?.checkInDate]);
     return (
         <div className="flex items-center justify-center bg-gray-100">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -65,30 +77,34 @@ const HotelSearch = () => {
                                     }));
                                 }
                             }}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm w-full"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-1.5 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
                             dateFormat="yyyy-MM-dd"
                         />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full text-black'>
                         <label htmlFor="checkOutDate" className="block text-sm font-medium text-gray-700">
                             Check-out Date
                         </label>
                         <DatePicker
-                            disabled={!!searchForm?.checkOutDate}
+                            disabled={!searchForm?.checkInDate}
                             wrapperClassName={"w-full"}
                             selected={searchForm?.checkOutDate ? parseISO(searchForm.checkOutDate) : null}
                             onChange={(newValue) => {
-                                if (newValue) {
+                                if (newValue && searchForm?.checkInDate && newValue > parseISO(searchForm.checkInDate)) {
                                     const formattedDate = format(newValue, 'yyyy-MM-dd');
                                     setSearchForm({ ...searchForm, checkOutDate: formattedDate });
                                 }
                             }}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm w-full"
+                            excludeDates={excludeDates}
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-1.5 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
                             dateFormat="yyyy-MM-dd"
                         />
                     </div>
                     <div>
-                        <label htmlFor="guests" className="block text-sm font-medium text-gray-700">
+                        {/* <label className="mb-2.5 block text-black">
+                            Guests 
+                        </label> */}
+                        <label htmlFor="guests" className="block text-black mb-2.5">
                             Guests
                         </label>
                         <input
@@ -96,7 +112,7 @@ const HotelSearch = () => {
                             id="guests"
                             value={searchForm?.guests ?? 1}
                             onChange={(e) => setSearchForm({ guests: Number(e.target.value) })}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-1.5 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
                         />
                     </div>
                     {countriesList.length > 0 &&

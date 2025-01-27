@@ -84,12 +84,12 @@ const Rooms = () => {
     return (
         <>
             <Breadcrumb pageName="Rooms" />
-            <div className="flex justify-end mb-4">
-                <SimpleButton onClick={handleCreateRoom}>
-                    <FontAwesomeIcon icon={faPlus} />
-                    Create Room
-                </SimpleButton>
-            </div>
+                <div className="flex justify-end mb-4">
+                    <SimpleButton onClick={handleCreateRoom}>
+                        <FontAwesomeIcon icon={faPlus} className='mr-2'/>
+                        Create Room
+                    </SimpleButton>
+                </div>
             <ItemsActionsTable
                 data={rooms}
                 parsed={parsedRooms}

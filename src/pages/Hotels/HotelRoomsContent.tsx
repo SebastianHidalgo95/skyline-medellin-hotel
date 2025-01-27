@@ -8,7 +8,7 @@ import ConfirmToast from "../../components/ConfirmToast";
 import { useDispatch, useSelector } from "react-redux";
 import { updateRoomStatus } from "../../redux/roomsSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faCircleXmark, faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCircleCheck, faCircleXmark, faInfoCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "../../redux/store";
 
 interface RoomsContentProps {
@@ -89,13 +89,18 @@ const RoomsContent = ({hotel}: RoomsContentProps) => {
     ];
     return(
         <>
-            <div className="flex justify-end items-center mb-4">
-                <SimpleButton onClick={handleCreateRoom}>
-                    <FontAwesomeIcon icon={faPlus} className="mr-2"/>
-                    Create Room
+            <div className="flex flex-end justify-end mb-4">
+                <SimpleButton onClick={() => navigate(-1)}>
+                    <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
+                    Back
                 </SimpleButton>
+                <div className="ml-auto">
+                    <SimpleButton onClick={handleCreateRoom}>
+                        <FontAwesomeIcon icon={faPlus} className="mr-2"/>
+                        Create Room
+                    </SimpleButton>
+                </div>
             </div>
-            
             <ItemsActionsTable 
                 data={roomsInCurrentHotelData}
                 headers={headers}

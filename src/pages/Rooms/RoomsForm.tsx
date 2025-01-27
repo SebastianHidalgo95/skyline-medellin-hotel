@@ -12,13 +12,26 @@ import SimpleButton from '../../components/Buttons/SimpleButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
+/**
+ * RoomsForm component handles the creation and updating of hotel rooms.
+ * It fetches the room and hotel details from the Redux store and allows the user to input or modify room details.
+ * The form includes fields for selecting a hotel, room type, number of bedrooms, number of guests, base price, and taxes.
+ * On submission, it dispatches actions to either add a new room or update an existing room.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ */
 const RoomsForm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // get the id from the url
     const { roomId, hotelId } = useParams<{ hotelId: string, roomId: string }>();
+
+    // constants
     const hotels = useSelector((state: RootState) => state.hotels.hotels) ?? [];
     const roomUpdate = useSelector((state: RootState) => state.rooms.rooms.find((room: Room)=> room?.id === roomId));
+    
+    // States
     const [selectedHotel, setSelectedHotel] = useState<Hotel|undefined>(
         hotels.find((hotel) => hotel.id === (hotelId ?? roomUpdate?.hotelId))
     );
@@ -34,8 +47,8 @@ const RoomsForm = () => {
     };
     const { form: roomForm, setForm:setRoomForm } = useForm<Room>({ initialValues });
     
+    // Functions
     const handleSubmitHotel = () => {
-        
         const id = roomId ?? Date.now().toString();
         roomId 
             ? dispatch(updateRoom(roomForm))
@@ -45,7 +58,6 @@ const RoomsForm = () => {
             }));
         navigate(-1);
     };
-    
     const parseOptionalNumberInput = (value: string|number) => {
         if ( typeof value === 'number') {
             return value;
@@ -91,7 +103,7 @@ const RoomsForm = () => {
                                 />
                             </div>
                             <div className="mb-4.5">
-                                <label className="mb-2.5 block text-black dark:text-white">
+                                <label className="mb-2.5 block text-black ">
                                     Type
                                 </label>
                                 {/* add select */}
@@ -109,25 +121,25 @@ const RoomsForm = () => {
                                 />
                             </div>
                             <div className="mb-4.5">
-                                <label className="mb-2.5 block text-black dark:text-white">
+                                <label className="mb-2.5 block text-black">
                                     Bedrooms 
                                 </label>
                                 <input
                                     type="number"
                                     placeholder="Enter room bedrooms"
-                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
                                     onChange={(e) => setRoomForm({bedrooms: parseOptionalNumberInput(e.target.value)})}
                                 />
                             </div>
 
                             <div className="mb-4.5">
-                                <label className="mb-2.5 block text-black dark:text-white">
+                                <label className="mb-2.5 block text-black">
                                     Guests 
                                 </label>
                                 <input
                                     type="number"
                                     placeholder="Enter total guests"
-                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter "
                                     onChange={(e) => setRoomForm({
                                         guests: isNaN(parseInt(e.target.value)) ? undefined : parseOptionalNumberInput(e.target.value)
                                     })}
@@ -135,19 +147,19 @@ const RoomsForm = () => {
                                 />
                             </div>
                             <div className="mb-4.5">
-                                <label className="mb-2.5 block text-black dark:text-white">
+                                <label className="mb-2.5 block text-black">
                                     Base Price 
                                 </label>
                                 <input
                                     type="number"
                                     placeholder="Enter base price"
-                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter"
                                     onChange={(e) => setRoomForm({basePrice :parseOptionalFloatInput(e.target.value)})}
                                     value={roomForm?.basePrice ?? ''}
                                 />
                             </div>
                             <div className="mb-4.5">
-                                <label className="mb-2.5 block text-black dark:text-white">
+                                <label className="mb-2.5 block text-black">
                                     Taxes
                                 </label>
                                 <input
@@ -159,9 +171,11 @@ const RoomsForm = () => {
                                     value={roomForm?.taxes}
                                 />
                             </div>
-                            <button onClick={handleSubmitHotel} className="flex w-1/3 mx-auto justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                                {roomId ? 'Update': 'Create'}
-                            </button>
+                            <div className='flex justify-center pt-4'>
+                                <SimpleButton onClick={handleSubmitHotel}>
+                                    {roomId ? 'Update': 'Create'}
+                                </SimpleButton>
+                            </div>
                         </div>
                     </div>
                 </div>
