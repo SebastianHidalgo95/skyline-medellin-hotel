@@ -34,32 +34,28 @@ git clone https://github.com/tu-usuario/skyline-medellin-hotel.git
 cd skyline-medellin-hotel/skyline-medellin-frontend
 ```
 
-### Estructura del Proyectoskyline-medellin-frontend/
-├── public/
-├── src/
-│   ├── assets/
-│   │   └── images/
-│   │       └── room1.jpg
-│   ├── components/
-│   │   └── RoomCard.tsx
-│   ├── hooks/
-│   ├── layouts/
-│   │   └── DefaultLayout.tsx
-│   ├── pages/
-│   │   ├── Hotels/
-│   │   │   └── CreateHotel.tsx
-│   │   ├── HotelSearchPage.tsx
-│   │   └── Rooms/
-│   │       └── RoomsForm.tsx
-│   ├── redux/
-│   │   ├── store.ts
-│   │   └── hotelsSlice.ts
-│   ├── types/
-│   ├── App.tsx
-│   └── index.tsx
-├── .gitignore
-├── package.json
-└── README.md
+### Description of Project Structure
+
+- **public/**: Contains public assets like images and other static files.
+- **src/**: The main source code directory for the application.
+  - **assets/**: Contains images and other asset files.
+  - **components/**: Reusable components like `RoomCard.tsx`.
+  - **hooks/**: Custom React hooks.
+  - **layouts/**: Layout components like `DefaultLayout.tsx` for page structure.
+  - **pages/**: Different pages of the application.
+    - **Hotels/**: Components and pages related to hotels (e.g., `CreateHotel.tsx`).
+    - **Rooms/**: Components and pages related to rooms (e.g., `RoomsForm.tsx`).
+    - **HotelSearchPage.tsx**: The page for searching hotels.
+  - **redux/**: Contains Redux related files.
+    - **store.ts**: Redux store configuration.
+    - **hotelsSlice.ts**: Redux slice for hotel-related state management.
+  - **types/**: TypeScript type definitions.
+  - **App.tsx**: The main application component.
+  - **index.tsx**: The entry point for the React app.
+
+- **.gitignore**: Specifies files and directories that should not be tracked by Git.
+- **package.json**: The configuration file for the project's dependencies and scripts.
+- **README.md**: The file you are currently reading.
 
 ### Uso
 - Buscar Hoteles
