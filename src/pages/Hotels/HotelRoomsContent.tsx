@@ -45,13 +45,13 @@ const RoomsContent = ({hotel}: RoomsContentProps) => {
     }
     const getActions = (room: Room) => [
         {
-            label: room.status === 'enable' ? 'Disable' : 'Enable',
+            label: room.status === 'enabled' ? 'Disabled' : 'Enabled',
             onClick: (room: Room) => {
-                const newStatus = room.status === 'enable' ? 'disable' : 'enable';
+                const newStatus = room.status === 'enabled' ? 'disabled' : 'enabled';
                 // Crear un ID único para el toast de confirmación
                 const confirmToastId = toast(
                     <ConfirmToast
-                        message={`Are you sure you want to ${room.status === 'enable' ? 'disable' : 'enable'} this Room?`}
+                        message={`Are you sure you want to ${room.status === 'enabled' ? 'disabled' : 'enabled'} this Room?`}
                         onConfirm={() => {
                             // Actualizar el estado del hotel
                             dispatch(updateRoomStatus({ id: room.id, status: newStatus }));
@@ -77,7 +77,7 @@ const RoomsContent = ({hotel}: RoomsContentProps) => {
                     }
                 );
             },
-            icon: <FontAwesomeIcon icon={room.status === 'enable' ? faCircleXmark : faCircleCheck} />,
+            icon: <FontAwesomeIcon icon={room.status === 'enabled' ? faCircleXmark : faCircleCheck} />,
         },
         {
             label: 'Details',

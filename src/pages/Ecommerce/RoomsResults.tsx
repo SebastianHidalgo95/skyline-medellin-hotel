@@ -24,14 +24,14 @@ const RoomsResults = () => {
     // Filter rooms by search params
     const filteredRooms = roomsWithHotel
         ?.filter(room => {
-            console.log(room)
-            return (room?.status == 'enable' && room?.hotel?.status == 'enable')
+            console.log('aqui', room)
+            return (room?.status == 'enabled' && room?.hotel?.status == 'enabled')
         })
         ?.filter(room => {
-            console.log(room)
+            console.log('aqui 2', room)
             // Filtrar por país si existe en los parámetros de búsqueda
             if (searchParams?.country?.id) {
-                return (room?.hotel?.country?.id === searchParams?.country.id);
+                return (room?.hotel?.country?.id === searchParams?.country?.id);
             }
             return true;
         })

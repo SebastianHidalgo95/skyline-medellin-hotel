@@ -41,9 +41,9 @@ const Hotels = () => {
     ]
     const getActions = (hotel: Hotel) => [
         {
-            label: hotel.status === 'enable' ? 'Disable' : 'Enable',
+            label: hotel.status === 'enabled' ? 'Disable' : 'Enable',
             onClick: (hotel: Hotel) => {
-                const newStatus = hotel.status === 'enable' ? 'disable' : 'enable';
+                const newStatus = hotel.status === 'enabled' ? 'disable' : 'enable';
                 // This toas is used for confirm and trigger a process on each decition
                 const confirmToastId = toast(
                     <ConfirmToast

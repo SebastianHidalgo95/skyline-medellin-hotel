@@ -15,6 +15,14 @@ const RoomCard: React.FC<RoomProps> = ({ room, searchParams }) => {
     const handleBookNow= (roomId: string, hotelId: string) => {
         navigate(`/booking/hotel/${hotelId}/room/${roomId}`);
     }
+    const dayReservation = (checkInDate: string, checkOutDate: string) => {
+        const checkIn = new Date(checkInDate);
+        const checkOut = new Date(checkOutDate);
+        const timeDifference = checkOut.getTime() - checkIn.getTime();
+        const daysDifference = timeDifference / (1000 * 3600 * 24);
+        return daysDifference;
+    };
+    const totalBasePrice = dayReservation(searchParams.checkInDate ?? '', searchParams.checkOutDate ?? '')*(room?.basePrice ?? 0)
     return (
         <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform hover:scale-105 hover:shadow-2xl">
             {/* Image Section */}
@@ -43,8 +51,16 @@ const RoomCard: React.FC<RoomProps> = ({ room, searchParams }) => {
                         <span className="font-medium text-gray-700">Country</span> {room?.hotel?.country?.name} 
                     </p>
                 }
+                { !searchParams?.city &&
+                    <p className="text-gray-500 mt-2">
+                        <span className="font-medium text-gray-700">City</span> {room?.hotel?.city?.name} 
+                    </p>
+                }
                 <p className="text-gray-500 mt-2">
                     <span className="font-medium text-gray-700">Price:</span> {room?.basePrice} USD
+                </p>
+                <p className="text-gray-500 mt-2">
+                    <span className="font-medium text-gray-700">Guests:</span> {room?.guests}
                 </p>
                 {/* beds */}
                 <p className="text-gray-500">
@@ -52,8 +68,10 @@ const RoomCard: React.FC<RoomProps> = ({ room, searchParams }) => {
                 </p>
 
                 {/* Action Buttons */}
-                <div className="flex justify-end items-center mt-4">
-                    
+                <div className="flex justify-between items-center mt-4">
+                    <p className="text-gray-500">
+                        <span className="font-medium text-gray-700">Total:</span> {totalBasePrice} USD
+                    </p>
                     <button
                         onClick={() => handleBookNow(room.id, room?.hotel?.id ?? '')}
                         className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition">
